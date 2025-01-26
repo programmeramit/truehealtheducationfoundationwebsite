@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -77,6 +78,19 @@ WSGI_APPLICATION = 'api.wsgi.app'
 # environments like Vercel. You can use a database over HTTP, hosted elsewhere.
 
 DATABASES = {}
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',  # or the name shown in your DATABASE_URL
+        'USER': 'postgres.hymmeucfodrsflcuhigz',  # as per Railway's credentials
+        'PASSWORD': '@Mit48096',  # replace with the correct password
+        'HOST': 'aws-0-ap-south-1.pooler.supabase.com',  # Railway's host
+        'PORT': '5432',  # Railway's port
+    }
+}
+
 
 
 # Password validation
