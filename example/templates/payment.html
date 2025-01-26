@@ -1,0 +1,32 @@
+<html>
+
+
+
+<head>
+
+
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+        "key": "{{ razorpay_key_id }}", // Razorpay API Key
+        "amount": "{{ amount }}", // Amount in paisa
+        "currency": "INR",
+        "name": "{{ donor_name }}",
+        "description": "Donation",
+        "order_id": "{{ razorpay_order_id }}",
+        "handler": function (response) {
+            // After successful payment
+            alert('Payment Successful! Payment ID: ' + response.razorpay_payment_id);
+            window.location.href = "/payment-success/" + response.razorpay_payment_id;
+        },
+        "prefill": {
+            "name": "{{ donor_name }}",
+            "email": "{{ email }}"
+        }
+    };
+    var rzp = new Razorpay(options);
+    rzp.open();
+</script>
+
+</haed>
+    </html>
