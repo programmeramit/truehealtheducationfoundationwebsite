@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms and Conditions - True Health Education Foundation</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+  <header class="bg-blue-600 text-white p-4">
+    <nav class="container mx-auto flex justify-between">
+      <h1 class="text-xl font-bold">TrueHealthEducationFoundation</h1>
+      <ul class="flex space-x-6">
+        <li><a href="/" class="hover:text-gray-300">Home</a></li>
+        <li><a href="{% url 'contact-us'%}" class="hover:text-gray-300">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="py-20 text-center">
+    <h2 class="text-3xl font-semibold mb-4">Terms and Conditions</h2>
+    <p class="text-xl text-gray-700">These terms and conditions govern the use of our website and donation platform.</p>
+    <ul class="mt-6 text-left max-w-3xl mx-auto space-y-4">
+      <li><strong>1. General Terms:</strong> By using our website, you agree to comply with all terms and conditions.</li>
+      <li><strong>2. Donation Policy:</strong> All donations are non-refundable.</li>
+      <li><strong>3. Liability:</strong> We are not liable for any damages arising from using our website.</li>
+      <!-- Add more points as necessary -->
+    </ul>
+  </section>
+
+  <footer class="bg-blue-600 text-white p-4 text-center">
+    <p>&copy; 2025 TrueHealth Education Foundation. All rights reserved.</p>
+  </footer>
+</body>
+</html>

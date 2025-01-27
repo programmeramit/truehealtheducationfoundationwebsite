@@ -138,8 +138,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #RazorPay
 
 
-RAZORPAY_KEY_ID = "rzp_test_f5sDC56yIKXiZK"
-RAZORPAY_SECRET_KEY = "p37aAdy6CIgcokT0wPSVe4t9"
+RAZORPAY_KEY_ID = "rzp_test_dP53XujhtWgAxa"
+RAZORPAY_SECRET_KEY = "j17DMTB37aNlxOJM6o7ccJsc"
 
 
 STATIC_URL = '/static/'

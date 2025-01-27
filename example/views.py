@@ -227,3 +227,17 @@ def carrer(request):
             print("Email sent successfully!")
         return redirect('index')
     return render(request,"carrer.html")
+
+
+
+def contact_us(request):
+    return render(request,"contact-us.html")
+
+def about_us(request):
+    return render(request,"about-us.html")
+def contact_us(request):
+    return render(request,"contact-us.html")
+def privacy_policy(request):
+    return render(request,"privacy-policy.html")
+def terms_condition(request):
+    return render(request,"terms-condition.html")
