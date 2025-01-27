@@ -20,7 +20,7 @@
             <nav>
                 <ul class="flex space-x-4">
                     <li><a href="#about" class="hover:underline">About</a></li>
-                    <li><a href="#services" class="hover:underline">Services</a></li>
+                    <li><a href="{% url 'carrer'%}" class="hover:underline">Career</a></li>
                     <li><a href="#donate" class="hover:underline">Donate</a></li>
                     <li><a href="#contact" class="hover:underline">Contact</a></li>
                 </ul>
@@ -42,6 +42,21 @@
         <div class="container mx-auto px-4 text-center">
             <h3 class="text-3xl font-bold mb-6">About Us</h3>
             <p class="text-lg text-gray-700">We are a non-profit organization dedicated to improving education and health for underprivileged communities. Together, we can build a brighter future.</p>
+            <div class="flex my-8">
+                <div class="flex flex-col">
+                <img src="https://res.cloudinary.com/dplbdop3n/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1737957252/WhatsApp_Image_2025-01-26_at_7.24.39_PM_vfhrrp.jpg" class="h-28 w-28"/>
+               <span class="font-bold">  Director</span>
+                </div>
+                <div class="flex flex-col m-4">
+                    <span class="font-bold">Rupesh Kumar 
+                    </span>
+                    <span>bhumiharputrarupeshbhai@gmail.com
+                    </span>
+                    <span>+919576550311
+                    </span>
+
+                </div>
+            </div>
         </div>
     </section>
 
@@ -81,7 +96,7 @@
     <!-- Contact Section -->
     <section id="contact" class="py-12 bg-white">
         <div class="container mx-auto px-4">
-            <h3 class="text-3xl font-bold text-center mb-6">Contact Us</h3>
+            <h3 class="text-3xl font-bold text-center mb-6">Donation</h3>
             <form class="max-w-xl mx-auto" method="POST" action="{% url 'donate'%}">
                 {% csrf_token %}
                 <div class="mb-4">

@@ -18,61 +18,106 @@ from email import encoders
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.utils import ImageReader
+from reportlab.lib import colors
+
+
+from .models import VolunteerApplication
+
+
+logo_path ="https://res.cloudinary.com/dplbdop3n/image/upload/v1737955474/logo_l00s7s.png"
+
+
+
+smtp_host = "smtp.hostinger.com"
+smtp_port = 587  
+smtp_user = "support@truehealtheducationfoundation.org"  
+smtp_password = "@Support48096"  
 
 def generate_certificate(name, donation_amount):
     buffer = BytesIO()
-    pdf = canvas.Canvas(buffer, pagesize=letter)
-    pdf.setFont("Helvetica-Bold", 20)
-    pdf.drawString(150, 750, "Certificate of Appreciation")
-    pdf.setFont("Helvetica", 12)
-    pdf.drawString(100, 700, f"Presented to: {name}")
-    pdf.drawString(100, 680, f"For your generous donation of: ${donation_amount:.2f}")
-    pdf.drawString(100, 660, "Your support means a lot to us!")
-    pdf.showPage()
-    pdf.save()
+
+    # Create a canvas object
+    c = canvas.Canvas(buffer, pagesize=A4)
+
+    # Set page dimensions
+    width, height = A4
+
+    # Add background color
+    c.setFillColor(colors.lightblue)
+    c.rect(0, 0, width, height, fill=1, stroke=0)
+
+    # Add the logo
+    if logo_path:
+        logo = ImageReader(logo_path)
+        c.drawImage(logo, width * 0.1, height * 0.75, width=50, height=50, mask='auto')
+    c.setFont("Helvetica-Bold", 22)
+    c.setFillColor(colors.black)
+    c.drawCentredString(width / 2, height * 0.8, "True Health Education Foundation")
+
+    # Add a thank-you message title
+    c.setFont("Helvetica-Bold", 20)
+    c.setFillColor(colors.black)
+    c.drawCentredString(width / 2, height * 0.7, "Thank You for Your Generosity!")
+
+    # Add the main message
+    c.setFont("Helvetica", 12)
+    c.setFillColor(colors.black)
+    thank_you_message = (
+        "We sincerely appreciate your generous donation to the True Health Education Foundation.\n "
+        "Your support helps us in our mission to promote health awareness and education\n\n"
+    
+    )
+
+    # Split the message into lines for better visibility
+    y_position = height * 0.6
+    for line in thank_you_message.split("\n"):
+        c.drawString(width * 0.1, y_position, line)
+        y_position -= 20
+
+    # Add a simple footer
+    c.setFont("Helvetica-Bold", 14)
+    c.drawCentredString(width / 2, height * 0.2, "Together, we make the world healthier!")
+
+    # Close the canvas
+    c.save()
+
+    # Return the buffer
     buffer.seek(0)
     return buffer
 
 def send_email_with_certificate(name, donation_amount, recipient_email):
-    # Hostinger SMTP server configuration
-    smtp_host = "smtp.hostinger.com"
-    smtp_port = 587  # Use TLS
-    smtp_user = "support@truehealtheducationfoundation.org"  # Your Hostinger email
-    smtp_password = "@Support48096"   # Your Hostinger email password
 
-    # Generate the certificate in memory
+
     certificate_buffer = generate_certificate(name, donation_amount)
 
-    # Create the email
     subject = "Your Certificate of Appreciation"
     body = f"""
     Dear {name},
     
-    Thank you for your generous donation of ${donation_amount:.2f}.
+    Thank you for your generous donation of {donation_amount:.2f}.
     Please find your Certificate of Appreciation attached.
     
     Best regards,
-    [Your Organization's Name]
+    TrueHealthEducationFoundation
     """
     msg = MIMEMultipart()
     msg["From"] = smtp_user
     msg["To"] = recipient_email
     msg["Subject"] = subject
 
-    # Attach the email body
     msg.attach(MIMEText(body, "plain"))
 
-    # Attach the certificate
     attachment = MIMEBase("application", "pdf")
     attachment.set_payload(certificate_buffer.getvalue())
     encoders.encode_base64(attachment)
     attachment.add_header("Content-Disposition", f"attachment; filename=Certificate_{name}.pdf")
     msg.attach(attachment)
 
-    # Send the email using Hostinger's SMTP server
     try:
         with smtplib.SMTP(smtp_host, smtp_port) as server:
-            server.starttls()  # Upgrade the connection to secure
+            server.starttls()  
             server.login(smtp_user, smtp_password)
             server.sendmail(smtp_user, recipient_email, msg.as_string())
         print(f"Email sent successfully to {recipient_email}")
@@ -88,7 +133,7 @@ razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID , settings.RAZO
 
 def index(request):
     now = datetime.now()
-    send_email_with_certificate("amit",200,"kamit896837@gmail.com")
+
  
     return render(request,"index.html")
 def donate(request):
@@ -149,3 +194,36 @@ def payment_success(request, pay_id):
     except Exception as e:
         # Handle errors (e.g., payment ID not found or API issues)
         return HttpResponse(f"Error: {str(e)}")
+
+
+def carrer(request):
+    if request.method == "POST":
+        # Get data from the form
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        phone = request.POST.get("phone_number")
+        address =  request.POST.get("address")
+
+        # Save to the VolunteerApplication model
+
+        message = MIMEMultipart()
+        message["From"] = smtp_user
+        message["To"] = email
+        message["Subject"] = "Thank you for joining us as Volunteer"
+        body = "Thank you to show us interest in volunteer.We will reach you for verification and after that you will become our volunteer"
+        VolunteerApplication.objects.create(
+            name=name,
+            email=email,
+            phone_number=phone,
+            address=address,
+
+            is_approved=False  # Default to not approved
+        )
+        message.attach(MIMEText(body, "plain"))
+        with smtplib.SMTP(smtp_host, smtp_port) as server:
+            server.starttls()  # Start TLS encryption
+            server.login(smtp_user, smtp_password)  # Log in to the server
+            server.sendmail(smtp_user, email, message.as_string())  # Send the email
+            print("Email sent successfully!")
+        return redirect('index')
+    return render(request,"carrer.html")

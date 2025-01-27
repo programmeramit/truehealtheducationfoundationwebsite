@@ -10,3 +10,24 @@ class Donation(models.Model):
 
     def __str__(self):
         return f"{self.name} - ₹{self.amount}"
+
+
+class Volunteer(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    phone_number = models.CharField(max_length=14)
+    address =  models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
+class VolunteerApplication(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    phone_number = models.CharField(max_length=14)
+    address =  models.CharField(max_length=50)
+    is_approved = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
