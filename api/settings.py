@@ -142,16 +142,12 @@ RAZORPAY_KEY_ID = "rzp_test_f5sDC56yIKXiZK"
 RAZORPAY_SECRET_KEY = "p37aAdy6CIgcokT0wPSVe4t9"
 
 
+STATIC_URL = '/static/'
 
+# Directory where static files will be collected
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.hostinger.com'  # or the SMTP host provided by Hostinger
-EMAIL_PORT = 465  # 465 is commonly used for SSL
-EMAIL_USE_SSL = True
-EMAIL_HOST_USER = 'support@truehealtheducationfoundation.org'
-EMAIL_HOST_PASSWORD = '@Support48096'
-
-from smtplib import SMTP_SSL
-
-smtp = SMTP_SSL('smtp.hostinger.com', port=465)  # No keyfile required
+# Additional static file locations
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
