@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>True Health Education Foundation</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
         body {
@@ -31,6 +32,24 @@
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease-out;
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slide-up {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fade-in 1s ease-out;
+        }
+        .animate-fade-in-up {
+            animation: fade-in 1.2s ease-out;
+        }
+        .animate-slide-up {
+            animation: slide-up 1.5s ease-out;
         }
     </style>
 </head>
@@ -117,6 +136,59 @@
         </div>
     </section>
 
+    <section class="relative pt-32 pb-20 overflow-hidden">
+        <!-- Background Gradient -->
+        <div class="absolute inset-0 bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-500 transform skew-y-6 scale-125"></div>
+        
+        <!-- Content Container -->
+        <div class="relative container mx-auto px-4 text-center">
+            <!-- Main Heading -->
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 text-white animate-fade-in">
+                Empowering <span class="bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-orange-500">Communities</span>, 
+                Transforming <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-teal-400">Lives</span>
+            </h1>
+    
+            <!-- Subheading -->
+            <p class="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto animate-fade-in-up">
+                At True Health Education Foundation, we are committed to creating sustainable change through education, healthcare, and empowerment initiatives. Join us in building a brighter future for all.
+            </p>
+    
+            <!-- Aims and Goals Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 animate-slide-up">
+                <!-- Aim 1: Education -->
+                <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl shadow-lg border border-white/10 hover:scale-105 transition-transform">
+                    <div class="text-4xl mb-4 text-yellow-400">📚</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Quality Education</h3>
+                    <p class="text-white/80">Providing free access to education for underprivileged children to break the cycle of poverty.</p>
+                </div>
+    
+                <!-- Aim 2: Healthcare -->
+                <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl shadow-lg border border-white/10 hover:scale-105 transition-transform">
+                    <div class="text-4xl mb-4 text-green-400">🏥</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Healthcare Access</h3>
+                    <p class="text-white/80">Organizing health camps and providing medical support to underserved communities.</p>
+                </div>
+    
+                <!-- Aim 3: Empowerment -->
+                <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl shadow-lg border border-white/10 hover:scale-105 transition-transform">
+                    <div class="text-4xl mb-4 text-pink-400">💪</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Empowerment</h3>
+                    <p class="text-white/80">Conducting skill development programs to empower individuals and communities.</p>
+                </div>
+            </div>
+    
+            <!-- Call-to-Action Buttons -->
+            <div class="mt-12 flex justify-center space-x-4 animate-fade-in-up">
+                <a href="#donate" class="bg-white text-purple-600 px-8 py-4 rounded-full text-lg font-bold shadow-xl hover:scale-105 transition-transform">
+                    Donate Now ➔
+                </a>
+                <a href="#about" class="border-2 border-white px-8 py-4 rounded-full text-lg text-white hover:bg-white hover:text-purple-600 transition-colors">
+                    Learn More
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Donation Section with JavaScript -->
     <section id="donate" class="py-20 donate-gradient text-white">
         <div class="container mx-auto px-4 text-center">
@@ -183,14 +255,17 @@
                     <div>
                         <h4 class="text-lg font-bold mb-4">Connect</h4>
                         <div class="flex space-x-4">
-                            <a href="#" class="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
+                            <a href="#" class="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors gap-4 flex">
                                 <!-- Social icons -->
+                                <i class="fa-brands fa-facebook"></i>
+                                <i class="fa-brands fa-x-twitter"></i>
                             </a>
                         </div>
                     </div>
                 </div>
                 <div class="border-t border-white/10 mt-12 pt-8 text-center opacity-80">
                     <p>&copy; 2025 True Health Education Foundation. All rights reserved.</p>
+
                 </div>
             </div>
         </footer>
@@ -199,10 +274,11 @@
         // Mobile Menu Toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
+    
 
         mobileMenuButton.addEventListener('click', () => {
             const isOpen = mobileMenu.style.maxHeight;
-            mobileMenu.style.maxHeight = isOpen ? '0' : `${mobileMenu.scrollHeight}px`;
+            mobileMenu.style.maxHeight = `${mobileMenu.scrollHeight}px`;
         });
 
         // Donation Amount Selection
