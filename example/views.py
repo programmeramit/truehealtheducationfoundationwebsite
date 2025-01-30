@@ -6,6 +6,7 @@ from django.shortcuts import render,redirect
 from django.conf import settings
 import razorpay
 from .models import Donation
+from datetime import datetime
 
 import smtplib
 from email.mime.text import MIMEText
@@ -21,7 +22,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.utils import ImageReader
 from reportlab.lib import colors
-
+from django.http import JsonResponse
 
 from .models import VolunteerApplication
 
@@ -241,3 +242,17 @@ def privacy_policy(request):
     return render(request,"privacy-policy.html")
 def terms_condition(request):
     return render(request,"terms-condition.html")
+
+def admin_dashboard(request):
+    # Calculate total, daily, and yearly donations
+    total_donations = Donation.objects.aggregate(total=models.Sum('amount'))['total'] or 0
+    today_donations = Donation.objects.filter(created_at__date=datetime.today()).aggregate(total=models.Sum('amount'))['total'] or 0
+    yearly_donations = Donation.objects.filter(created_at__year=datetime.today().year).aggregate(total=models.Sum('amount'))['total'] or 0
+    
+    chart_data = {
+        'total': total_donations,
+        'daily': today_donations,
+        'yearly': yearly_donations
+    }
+    
+    return render(request, 'admin/index.html', {'chart_data': chart_data})

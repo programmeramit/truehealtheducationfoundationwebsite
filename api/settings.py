@@ -32,6 +32,16 @@ ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app','www.truehealtheducationfoundation.o
 # Application definition
 
 INSTALLED_APPS = [
+    #unfolds
+      "unfold",  # before django.contrib.admin
+    "unfold.contrib.filters",  # optional, if special filters are needed
+    "unfold.contrib.forms",  # optional, if special form elements are needed
+    "unfold.contrib.inlines",  # optional, if special inlines are needed
+    "unfold.contrib.import_export",  # optional, if django-import-export package is used
+    "unfold.contrib.guardian",  # optional, if django-guardian package is used
+    "unfold.contrib.simple_history",  # optional, if django-simple-history package is used
+
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -151,3 +161,23 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+
+
+
+ 
+UNFOLD = {
+    "SITE_TITLE": "True Health Education Foundation",
+    "SITE_HEADER": "True Health Education Foundation",
+    "SITE_ICON": {
+        "light": "https://res.cloudinary.com/dplbdop3n/image/upload/v1737955474/logo_l00s7s.png",  # Light mode icon
+        "dark": "https://res.cloudinary.com/dplbdop3n/image/upload/v1737955474/logo_l00s7s.png",   # Dark mode icon
+    },
+    "STYLES": [
+        "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css",  # Add FontAwesome
+    ],
+    "SCRIPTS": [
+        "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js",  # Add Chart.js
+    ],
+}
+
