@@ -38,7 +38,7 @@ smtp_port = 587
 smtp_user = "support@truehealtheducationfoundation.org"  
 smtp_password = "@Support48096"  
 
-def generate_certificate(name, donation_amount,email):
+def generate_certificate(name, donation_amount,email,pay_id):
     buffer = BytesIO()
     c = canvas.Canvas(buffer, pagesize=letter)
     width, height = letter
@@ -81,11 +81,11 @@ def generate_certificate(name, donation_amount,email):
     c.setFont("Helvetica-Bold", 10)
     c.setFillColorRGB(0.9, 0.3, 0)  # Dark Orange
     today = date.today()
-    current_time = datetime.datetime.now()
+    current_time = datetime.now().date()
 
 
     c.drawString(400, height - 150, f"Payment Date:{today}")
-    c.drawString(400, height - 170, f"Receipt No.: {current_time.year}-HEALTH-12345")
+    c.drawString(400, height - 170, f"Receipt No.: {current_time.year}-HEALTH-{pay_id[-3:]}")
 
     # Table Header (Styled & Bold)
     c.setFillColor(black)
@@ -96,15 +96,15 @@ def generate_certificate(name, donation_amount,email):
 
     # Table Content
     c.setFont("Helvetica", 10)
-    c.drawString(60, height - 250, "1️")
+    c.drawString(60, height - 250, "1")
     c.drawString(160, height - 250, "General Donation")
-    c.drawString(420, height - 250, donation_amount)
+    c.drawString(420, height - 250, str(donation_amount))
 
     # Total Amount
     c.setFont("Helvetica-Bold", 11)
     c.setFillColorRGB(0, 0.5, 0)  # Green
     c.drawString(160, height - 280, " Total Amount")
-    c.drawString(420, height - 280, donation_amount)
+    c.drawString(420, height - 280, str(donation_amount))
 
     # Tax Exemption Note
     c.setFont("Helvetica", 9)
@@ -127,10 +127,10 @@ def generate_certificate(name, donation_amount,email):
     buffer.seek(0)
     return buffer
 
-def send_email_with_certificate(name, donation_amount, recipient_email):
+def send_email_with_certificate(name, donation_amount, recipient_email,pay_id):
 
 
-    certificate_buffer = generate_certificate(name, donation_amount,recipient_email)
+    certificate_buffer = generate_certificate(name, donation_amount,recipient_email,pay_id)
 
     subject = "Your Certificate of Appreciation"
     body = f"""
@@ -229,7 +229,7 @@ def payment_success(request, pay_id):
         )
 
         # Redirect to a success page
-        send_email_with_certificate(donor_name,amount,email)
+        send_email_with_certificate(donor_name,amount,email,pay_id)
         return redirect('index')
     except Exception as e:
         # Handle errors (e.g., payment ID not found or API issues)
@@ -266,7 +266,6 @@ def carrer(request):
             server.sendmail(smtp_user, email, message.as_string())  # Send the email
             print("Email sent successfully!")
         return redirect('index')
-    send_email_with_certificate("amit",500,"kamit896837@gmail.com")
 
     return render(request,"carrer.html")
 
