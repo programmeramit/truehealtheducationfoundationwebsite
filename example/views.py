@@ -130,7 +130,7 @@ def generate_certificate(name, donation_amount,email):
 def send_email_with_certificate(name, donation_amount, recipient_email):
 
 
-    certificate_buffer = generate_certificate(name, donation_amount,recipient_emailp)
+    certificate_buffer = generate_certificate(name, donation_amount,recipient_email)
 
     subject = "Your Certificate of Appreciation"
     body = f"""
