@@ -14,15 +14,17 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 
+from datetime import date
 
 
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
 from reportlab.lib.utils import ImageReader
 from reportlab.lib import colors
 from django.http import JsonResponse
+from reportlab.lib.colors import black, Color
+
 
 from .models import VolunteerApplication
 
@@ -36,62 +38,99 @@ smtp_port = 587
 smtp_user = "support@truehealtheducationfoundation.org"  
 smtp_password = "@Support48096"  
 
-def generate_certificate(name, donation_amount):
+def generate_certificate(name, donation_amount,email):
     buffer = BytesIO()
+    c = canvas.Canvas(buffer, pagesize=letter)
+    width, height = letter
 
-    # Create a canvas object
-    c = canvas.Canvas(buffer, pagesize=A4)
+    # Gradient Background - Light Blue to Green
+    c.setFillColorRGB(0.5, 0.8, 1)  # Sky Blue at the top
+    c.rect(0, height / 2, width, height / 2, fill=1, stroke=0)
 
-    # Set page dimensions
-    width, height = A4
+    c.setFillColorRGB(0.3, 0.7, 0.3)  # Light Green at the bottom
+    c.rect(0, 0, width, height / 2, fill=1, stroke=0)
 
-    # Add background color
-    c.setFillColor(colors.lightblue)
-    c.rect(0, 0, width, height, fill=1, stroke=0)
+    # Golden Elegant Border
+    c.setStrokeColorRGB(0.9, 0.7, 0.2)  # Gold
+    c.setLineWidth(10)
+    c.roundRect(30, 30, width - 60, height - 60, 20, stroke=1, fill=0)
 
-    # Add the logo
-    if logo_path:
-        logo = ImageReader(logo_path)
-        c.drawImage(logo, width * 0.1, height * 0.75, width=50, height=50, mask='auto')
-    c.setFont("Helvetica-Bold", 22)
-    c.setFillColor(colors.black)
-    c.drawCentredString(width / 2, height * 0.8, "True Health Education Foundation")
+    # Inner White Box (Shadow Effect)
+    c.setFillColorRGB(1, 1, 1)  # White Box
+    c.roundRect(40, 40, width - 80, height - 80, 15, stroke=0, fill=1)
 
-    # Add a thank-you message title
+    # Header - Foundation Name & Logo Placeholder
     c.setFont("Helvetica-Bold", 20)
-    c.setFillColor(colors.black)
-    c.drawCentredString(width / 2, height * 0.7, "Thank You for Your Generosity!")
+    c.setFillColorRGB(0, 0.5, 0.7)  # Dark Blue
+    c.drawCentredString(width / 2, height - 60, " TRUE HEALTH EDUCATION FOUNDATION ")
 
-    # Add the main message
-    c.setFont("Helvetica", 12)
-    c.setFillColor(colors.black)
-    thank_you_message = (
-        "We sincerely appreciate your generous donation to the True Health Education Foundation.\n "
-        "Your support helps us in our mission to promote health awareness and education\n\n"
-    
-    )
+    c.setFont("Helvetica", 13)
+    c.setFillColor(black)
+    c.drawCentredString(width / 2, height - 85, "A Non-Profit Organization")
+    c.drawCentredString(width / 2, height - 105, "Building a Healthier Future, One Step at a Time")
 
-    # Split the message into lines for better visibility
-    y_position = height * 0.6
-    for line in thank_you_message.split("\n"):
-        c.drawString(width * 0.1, y_position, line)
-        y_position -= 20
+    # Donor Information
+    c.setFont("Helvetica-Bold", 11)
+    c.setFillColorRGB(0, 0.4, 0)  # Green
+    c.drawString(60, height - 150, f"Received with gratitude from:{name} ")
+    c.setFont("Helvetica", 10)
+    c.setFillColor(black)
+    c.drawString(60, height - 170, f"Email:{email}")
 
-    # Add a simple footer
-    c.setFont("Helvetica-Bold", 14)
-    c.drawCentredString(width / 2, height * 0.2, "Together, we make the world healthier!")
+    # Payment Details
+    c.setFont("Helvetica-Bold", 10)
+    c.setFillColorRGB(0.9, 0.3, 0)  # Dark Orange
+    today = date.today()
+    current_time = datetime.datetime.now()
 
-    # Close the canvas
+
+    c.drawString(400, height - 150, f"Payment Date:{today}")
+    c.drawString(400, height - 170, f"Receipt No.: {current_time.year}-HEALTH-12345")
+
+    # Table Header (Styled & Bold)
+    c.setFillColor(black)
+    c.setFont("Helvetica-Bold", 11)
+    c.drawString(60, height - 230, "S.No")
+    c.drawString(160, height - 230, " Contribution Type")
+    c.drawString(420, height - 230, "Amount (Rs.)")
+
+    # Table Content
+    c.setFont("Helvetica", 10)
+    c.drawString(60, height - 250, "1️")
+    c.drawString(160, height - 250, "General Donation")
+    c.drawString(420, height - 250, donation_amount)
+
+    # Total Amount
+    c.setFont("Helvetica-Bold", 11)
+    c.setFillColorRGB(0, 0.5, 0)  # Green
+    c.drawString(160, height - 280, " Total Amount")
+    c.drawString(420, height - 280, donation_amount)
+
+    # Tax Exemption Note
+    c.setFont("Helvetica", 9)
+    c.setFillColor(black)
+    c.drawCentredString(width / 2, height - 310, "Donations to True Health Education Foundation are tax-exempt under Section 80G.")
+
+    # PAN and Registration Info
+    c.setFont("Helvetica", 10)
+    c.drawString(60, height - 330, " PAN No.: AAABB0123G")
+    c.drawString(60, height - 345, " Regn. No.: NGO/456/2020 | Date: 15 May, 2020")
+
+    # Footer
+    c.setFont("Helvetica", 9)
+    c.setFillColorRGB(0.5, 0.2, 0.2)  # Dark Red
+    c.drawCentredString(width / 2, height - 370, " This is a system-generated receipt, signature not required.")
+
+    c.showPage()
     c.save()
-
-    # Return the buffer
+    
     buffer.seek(0)
     return buffer
 
 def send_email_with_certificate(name, donation_amount, recipient_email):
 
 
-    certificate_buffer = generate_certificate(name, donation_amount)
+    certificate_buffer = generate_certificate(name, donation_amount,recipient_emailp)
 
     subject = "Your Certificate of Appreciation"
     body = f"""
@@ -227,6 +266,8 @@ def carrer(request):
             server.sendmail(smtp_user, email, message.as_string())  # Send the email
             print("Email sent successfully!")
         return redirect('index')
+    send_email_with_certificate("amit",500,"kamit896837@gmail.com")
+
     return render(request,"carrer.html")
 
 
