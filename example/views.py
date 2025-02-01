@@ -309,7 +309,6 @@ def carrer(request):
             server.sendmail(smtp_user, email, message.as_string())  # Send the email
             print("Email sent successfully!")
         return redirect('index')
-    send_email_with_certificate("amit",100,"kamit896837@gmail.com","123456789")
 
     
     
