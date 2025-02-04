@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import now
 
 class Donation(models.Model):
     name = models.CharField(max_length=100, help_text="Name of the donor")
@@ -17,6 +18,7 @@ class Volunteer(models.Model):
     email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=14)
     address =  models.CharField(max_length=50)
+    created_at = models.DateTimeField(default=now)  # ✅ Add this line
 
     def __str__(self):
         return self.name

@@ -1,7 +1,7 @@
 # example/urls.py
 from django.urls import path
 
-from example.views import index,donate,payment_success,carrer,about_us,contact_us,privacy_policy,terms_condition,admin_dashboard
+from example.views import index,donate,payment_success,carrer,about_us,contact_us,privacy_policy,terms_condition,dashboard_callback
 
 
 urlpatterns = [
@@ -13,6 +13,5 @@ urlpatterns = [
     path('contact-us',contact_us,name="contact-us"),
     path('privacy-policy',privacy_policy,name="privacy-policy"),
     path("terms-condition",terms_condition,name="terms-condition"),
-    path('admin/dashboard/', admin_dashboard, name='admin_dashboard'),  # Custom dashboard view
 
 ]

@@ -145,8 +145,8 @@ def generate_certificate(name, donation_amount, email, pay_id, logo_path=logo_pa
 
     # PAN & Registration
     reg_info = [
-        ["PAN No.:", "AAABB0123G"],
-        ["Regn. No.:", "NGO/456/2020 | Date: 15 May, 2020"]
+        ["PAN No.:", "AALCT2406R"],
+        ["Regn. No.:", "NGO/456/2020 | Date: 30 Aug, 2024"]
     ]
     reg_table = Table(reg_info, colWidths=[150, 300])
     reg_table.setStyle(TableStyle([
@@ -328,16 +328,30 @@ def privacy_policy(request):
 def terms_condition(request):
     return render(request,"terms-condition.html")
 
-def admin_dashboard(request):
-    # Calculate total, daily, and yearly donations
-    total_donations = Donation.objects.aggregate(total=models.Sum('amount'))['total'] or 0
-    today_donations = Donation.objects.filter(created_at__date=datetime.today()).aggregate(total=models.Sum('amount'))['total'] or 0
-    yearly_donations = Donation.objects.filter(created_at__year=datetime.today().year).aggregate(total=models.Sum('amount'))['total'] or 0
-    
+
+
+from django.db.models import Sum
+from django.utils.timezone import now, localdate
+from .models import Donation
+
+def dashboard_callback(request, context):
+    # Aggregate data
+    total_donations = Donation.objects.aggregate(total_amount=Sum('amount'))['total_amount'] or 0
+    total_donations_today = Donation.objects.filter(created_at=localdate()).aggregate(total_amount=Sum('amount'))['total_amount'] or 0
+    total_donations_year = Donation.objects.filter(created_at__year=now().year).aggregate(total_amount=Sum('amount'))['total_amount'] or 0
+
+    # Prepare chart data
     chart_data = {
-        'total': total_donations,
-        'daily': today_donations,
-        'yearly': yearly_donations
+        'labels': ["Total Donations", "Today's Donations", "This Year's Donations"],
+        'datasets': [{
+            'label': 'Donation Amount',
+            'data': [total_donations, total_donations_today, total_donations_year],
+            'backgroundColor': ['#FF6384', '#36A2EB', '#FFCE56'],
+        }]
     }
-    
-    return render(request, 'admin/index.html', {'chart_data': chart_data})
+
+    # Update context with chart data
+    context.update({
+        'chart_data': chart_data
+    })
+    return context
