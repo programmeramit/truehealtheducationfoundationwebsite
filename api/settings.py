@@ -183,3 +183,4 @@ UNFOLD = {
         "DASHBOARD_CALLBACK": "example.admin.dashboard_callback",
 }
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
