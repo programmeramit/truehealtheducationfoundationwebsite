@@ -292,8 +292,26 @@ def carrer(request):
         message = MIMEMultipart()
         message["From"] = smtp_user
         message["To"] = email
-        message["Subject"] = "Thank you for joining us as Volunteer"
-        body = "Thank you to show us interest in volunteer.We will reach you for verification and after that you will become our volunteer"
+        message["Subject"] = "Application Received – Thank You for Volunteering with True Health Education Foundation"
+        body = f"""
+Dear {name},
+
+Thank you for your interest in volunteering with True Health Education Foundation. We are excited to have received your application and appreciate the time and effort you have put into expressing your interest in contributing to our cause.
+
+Your application is currently under review, and we will contact you shortly regarding the next steps. We truly value your enthusiasm and commitment to making a positive impact in the community, and we look forward to the possibility of working together.
+
+In the meantime, please feel free to explore more about our mission and initiatives on our website: [Website Link] (if applicable).
+
+Thank you once again for considering True Health Education Foundation as a platform for your volunteer work. We are grateful for your willingness to contribute to our cause.
+
+Best regards,
+
+Amit Kumar
+Technical Head
+True Health Education Foundation  
+truehealtheducationfoundation.org
+"""
+
         VolunteerApplication.objects.create(
             name=name,
             email=email,
