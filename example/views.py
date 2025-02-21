@@ -177,14 +177,24 @@ def send_email_with_certificate(name, donation_amount, recipient_email,pay_id):
 
     subject = "Your Certificate of Appreciation"
     body = f"""
-    Dear {name},
-    
-    Thank you for your generous donation of {donation_amount:.2f}.
-    Please find your Certificate of Appreciation attached.
-    
-    Best regards,
-    TrueHealthEducationFoundation
-    """
+Dear {name},
+
+On behalf of the entire team at True Health Education Foundation, we would like to extend our heartfelt thanks for your generous donation. Your support plays a crucial role in furthering our mission to create positive change in the community.
+
+Your contribution will directly impact our initiatives and help us continue making a difference in the lives of those who need it most. We are deeply grateful for your commitment to our cause, and your donation allows us to continue our work with renewed enthusiasm.
+
+As a token of our appreciation, please find your donation receipt attached. Should you have any questions or require further information, feel free to reach out to us.
+
+Once again, thank you for your generosity. We are honored to have your support in helping us make a lasting impact.
+
+Best regards,
+
+Sahdeo Prajapati
+Director  
+True Health Education Foundation  
+truehealtheducationfoundation.org
+"""
+
     msg = MIMEMultipart()
     msg["From"] = smtp_user
     msg["To"] = recipient_email
