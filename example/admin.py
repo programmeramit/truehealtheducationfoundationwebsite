@@ -10,7 +10,9 @@ from unfold.admin import ModelAdmin
 from unfold.views import UnfoldModelAdminViewMixin
 
 from .models import Donation, Volunteer, VolunteerApplication
+from .utlis import send_certificate_email
 
+logo_path ="https://res.cloudinary.com/dplbdop3n/image/upload/v1737955474/logo_l00s7s.png"
 
 
 @admin.action(description="Approve and remove selected volunteers")
@@ -23,8 +25,18 @@ def approve_and_remove_volunteers(modeladmin, request, queryset):
                 phone_number=application.phone_number,
                 address=application.address
             )
+            send_certificate_email(
+                receiver_email=application.email,
+                volunteer_name=application.name,
+                logo_path=logo_path,
+                sender_email="support@truehealtheducationfoundation.org",
+                sender_password="@Support48096"
+            )
+
+
             
             application.delete()
+        
 
 
 @admin.register(Donation)

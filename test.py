@@ -92,6 +92,7 @@ def create_volunteer_certificate_buffer(volunteer_name, logo_path):
     # Draw the date on the certificate
     c.drawString(120 + border_padding, height - 320, f"Date: {today_date}")
     
+    c.drawString(120 + border_padding, height - 340, "Signature: _________________________")
 
     # Footer
     c.setFont("Helvetica-Oblique", 10)
@@ -115,28 +116,10 @@ def send_certificate_email(receiver_email, volunteer_name, logo_path, sender_ema
     msg = MIMEMultipart()
     msg['From'] = sender_email
     msg['To'] = receiver_email
-    msg['Subject'] = "Thank You for Volunteering – Certificate of Appreciation Enclosed"
+    msg['Subject'] = "Certificate of Appreciation - True Health Education Foundation"
 
     # Email body
-    body = f"""
-Dear {volunteer_name},
-
-We are pleased to inform you that you have successfully joined True Health Education Foundation as a volunteer. Your decision to contribute your time and skills to our cause reflects your dedication to creating a positive impact in the community. We sincerely appreciate the passion and enthusiasm you've shown toward our mission.
-
-As a volunteer, you will play an essential role in furthering the foundation's goals. We are excited to work with you and look forward to the meaningful contributions you will bring to our initiatives.
-
-Please find attached your Certificate of Appreciation, acknowledging your valuable participation and commitment.
-
-Once again, thank you for joining us in this important work. We truly appreciate your involvement and dedication.
-
-Best regards,
-
-Sahdeo Prajapati
-Director
-True Health Education Foundation
-truehealtheducationfoundation.org
-"""
-
+    body = "Dear {0},\n\nPlease find attached your Certificate of Appreciation from True Health Education Foundation.\n\nBest regards,\nTrue Health Education Foundation".format(volunteer_name)
     msg.attach(MIMEText(body, 'plain'))
 
     # Attach the certificate PDF file
@@ -157,4 +140,12 @@ truehealtheducationfoundation.org
         print(f"Failed to send email: {e}")
 
 # Example usage:
+logo_path ="https://res.cloudinary.com/dplbdop3n/image/upload/v1737955474/logo_l00s7s.png"
 
+send_certificate_email(
+    receiver_email="kamit896837@gmail.com",
+    volunteer_name="Amit KUmar",
+    logo_path=logo_path,
+    sender_email="support@truehealtheducationfoundation.org",
+    sender_password="@Support48096"
+)
