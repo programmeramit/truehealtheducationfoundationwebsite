@@ -117,89 +117,34 @@
                 </a>
             </div>
         </div>
+        <div class="container mx-auto px-4 py-10">
+            <h2 class="text-4xl font-bold text-center text-white mb-8"> Latest Blogs</h2>
+    
+            <div class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
+                {% for blog in blogs %}
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+
+                    <img src="{{ blog.image_url }}" alt="{{ blog.title }}" class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <h3 class="text-xl font-semibold text-gray-900">{{ blog.title }}</h3>
+                        <p class="text-gray-600 text-sm mt-2">{{ blog.meta_description|truncatechars:100 }}</p>
+                        <div class="mt-4">
+                            <a href="{% url 'blog_detail' slug=blog.slug %}" 
+                               class="inline-block text-white bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Read More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+    </div>
     </section>
 
 
-
-<div>
 
    
 
-    <section class="relative pt-32 pb-20 overflow-hidden">
-        <!-- Background Gradient -->
-        <div class="absolute inset-0 bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-500 transform skew-y-6 scale-125"></div>
-        
-        <!-- Content Container -->
-        <div class="relative container mx-auto px-4 text-center">
-            <!-- Main Heading -->
-            <h1 class="text-5xl md:text-6xl font-bold mb-6 text-white animate-fade-in">
-                Empowering <span class="bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-orange-500">Communities</span>, 
-                Transforming <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-teal-400">Lives</span>
-            </h1>
-        
-            <!-- Subheading -->
-            <p class="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto animate-fade-in-up">
-                At True Health Education Foundation, we are committed to creating sustainable change through education, healthcare, and empowerment initiatives. Join us in building a brighter future for all.
-            </p>
-            
-    
-            <!-- Aims and Goals Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 animate-slide-up">
-                <!-- Aim 1: Education -->
-                <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl shadow-lg border border-white/10 hover:scale-105 transition-transform">
-                    <div class="text-4xl mb-4 text-yellow-400">📚</div>
-                    <h3 class="text-2xl font-bold text-white mb-4">Quality Education</h3>
-                    <p class="text-white/80">Providing free access to education for underprivileged children to break the cycle of poverty.</p>
-                </div>
-    
-                <!-- Aim 2: Healthcare -->
-                <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl shadow-lg border border-white/10 hover:scale-105 transition-transform">
-                    <div class="text-4xl mb-4 text-green-400">🏥</div>
-                    <h3 class="text-2xl font-bold text-white mb-4">Healthcare Access</h3>
-                    <p class="text-white/80">Organizing health camps and providing medical support to underserved communities.</p>
-                </div>
-    
-                <!-- Aim 3: Empowerment -->
-                <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl shadow-lg border border-white/10 hover:scale-105 transition-transform">
-                    <div class="text-4xl mb-4 text-pink-400">💪</div>
-                    <h3 class="text-2xl font-bold text-white mb-4">Empowerment</h3>
-                    <p class="text-white/80">Conducting skill development programs to empower individuals and communities.</p>
-                </div>
-            </div>
-    
-            <!-- Call-to-Action Buttons -->
-            <div class="mt-12 flex justify-center space-x-4 animate-fade-in-up">
-                <a href="#donate" class="bg-white text-purple-600 px-8 py-4 rounded-full text-lg font-bold shadow-xl hover:scale-105 transition-transform">
-                    Donate Now ➔
-                </a>
-                <a href="#about" class="border-2 border-white px-8 py-4 rounded-full text-lg text-white hover:bg-white hover:text-purple-600 transition-colors">
-                    Learn More
-                </a>
-            </div>
-
-            <div class="container mx-auto px-4 py-10">
-                <h2 class="text-4xl font-bold text-center text-white mb-8"> Latest Blogs</h2>
-        
-                <div class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
-                    {% for blog in blogs %}
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
-
-                        <img src="{{ blog.image_url }}" alt="{{ blog.title }}" class="w-full h-48 object-cover">
-                        <div class="p-5">
-                            <h3 class="text-xl font-semibold text-gray-900">{{ blog.title }}</h3>
-                            <p class="text-gray-600 text-sm mt-2">{{ blog.meta_description|truncatechars:100 }}</p>
-                            <div class="mt-4">
-                                <a href="{% url 'blog_detail' slug=blog.slug %}" 
-                                   class="inline-block text-white bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                                    Read More
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-        </div>
-    </section>
 
     <!-- Donation Section with JavaScript -->
     <section id="donate" class="py-20 donate-gradient text-white">
