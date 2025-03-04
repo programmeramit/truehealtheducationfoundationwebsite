@@ -9,8 +9,10 @@ from django.utils.timezone import now, localdate, timedelta
 from unfold.admin import ModelAdmin
 from unfold.views import UnfoldModelAdminViewMixin
 
-from .models import Donation, Volunteer, VolunteerApplication
+from .models import Donation, Volunteer, VolunteerApplication,BlogPost
 from .utlis import send_certificate_email
+from ckeditor.widgets import CKEditorWidget
+from django.db import models
 
 logo_path ="https://res.cloudinary.com/dplbdop3n/image/upload/v1737955474/logo_l00s7s.png"
 
@@ -62,6 +64,11 @@ class VolunteerAdmin(ModelAdmin):
     search_fields = ('name', 'email')
     list_per_page = 10
 
+@admin.register(BlogPost)
+class BlogPost(ModelAdmin):
+    list_display = ('title', 'created_at')
+    prepopulated_fields = {'slug': ('title',)}
+    formfield_overrides = {models.TextField: {'widget': CKEditorWidget()}}
 
 # Custom Dashboard View
 admin.site.index_title = 'True Health Education Foundation'

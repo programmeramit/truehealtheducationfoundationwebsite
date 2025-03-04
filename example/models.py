@@ -1,5 +1,8 @@
 from django.db import models
 from django.utils.timezone import now
+from .utlis import send_certificate_email
+from ckeditor.fields import RichTextField
+from django.utils.text import slugify
 
 class Donation(models.Model):
     name = models.CharField(max_length=100, help_text="Name of the donor")
@@ -33,3 +36,19 @@ class VolunteerApplication(models.Model):
 
     def __str__(self):
         return self.name
+
+class BlogPost(models.Model):
+    title = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(max_length=200, unique=True, blank=True)
+    image_url = models.URLField(max_length=500, blank=True, null=True)
+    content = RichTextField()  # Replacing TextField with RichTextField
+    meta_description = models.CharField(max_length=160, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title

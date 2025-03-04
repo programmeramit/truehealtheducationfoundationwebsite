@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Metadata -->
+    <title>Latest Blogs | True Health Education Foundation</title>
+    <meta name="description" content="Explore the latest blogs on health, safety, and education by the True Health Education Foundation. Stay informed and aware!">
+    <meta name="keywords" content="blog, health, education, safety, latest articles">
+    <meta name="author" content="True Health Education Foundation">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+    <!-- Open Graph (Facebook, LinkedIn) -->
+    <meta property="og:title" content="Latest Blogs | True Health Education Foundation">
+    <meta property="og:description" content="Stay updated with insightful blogs on health, safety, and education.">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Latest Blogs | True Health Education Foundation">
+    <meta name="twitter:description" content="Read engaging and informative blogs on health, safety, and education.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <!-- 🌟 Header -->
+    <header class="bg-gradient-to-r from-purple-700 to-indigo-600 text-white fixed w-full z-50 shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="https://res.cloudinary.com/dplbdop3n/image/upload/v1737955474/logo_l00s7s.png" 
+                     class="w-12 h-12 rounded-full border-2 border-white"
+                     alt="Foundation Logo">
+                <h1 class="text-2xl font-bold">True Health Education Foundation</h1>
+            </div>
+            <nav class="hidden md:flex space-x-6">
+                <a href="/" class="hover:text-yellow-300 transition">Home</a>
+                <a href="#about" class="hover:text-yellow-300 transition">About</a>
+                <a href="{% url 'carrer' %}" class="hover:text-yellow-300 transition">Career</a>
+                <a href="#donate" class="hover:text-yellow-300 transition">Donate</a>
+                <a href="#contact" class="hover:text-yellow-300 transition">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 🎬 Hero Section -->
+    <section class="relative bg-cover bg-center h-[50vh] flex items-center justify-center text-white text-center shadow-lg"
+             style="background-image: url('https://source.unsplash.com/1600x900/?blog,writing');">
+        <div class="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-md flex flex-col items-center justify-center p-6 rounded-lg">
+            <h1 class="text-5xl font-extrabold animate-fadeIn">Our Latest Blogs</h1>
+            <p class="text-lg opacity-90 mt-4 animate-fadeInSlow">Explore engaging articles on health, safety, and education.</p>
+        </div>
+    </section>
+
+    <!-- 🔍 Search Bar -->
+    <div class="container mx-auto px-6 mt-12">
+        <div class="bg-white p-4 shadow-md rounded-md flex items-center">
+            <input type="text" id="search" class="w-full px-4 py-2 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500"
+                   placeholder="Search for blogs...">
+            <button class="ml-4 bg-indigo-600 text-white px-6 py-2 rounded-md font-bold shadow-md hover:bg-indigo-700 transition">
+                Search
+            </button>
+        </div>
+    </div>
+
+    <!-- 📰 Blog List Section -->
+    <main class="container mx-auto px-6 py-16">
+        <div class="grid md:grid-cols-3 gap-8">
+            {% for blog in blogs %}
+            <div class="bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow p-6 animate-fadeIn">
+                <img src="{{ blog.image_url }}" alt="{{ blog.title }}" class="w-full h-48 object-cover rounded-lg">
+                <h2 class="text-xl font-bold text-gray-900 mt-4">{{ blog.title }}</h2>
+                <p class="text-gray-600 text-sm mt-2">{{ blog.meta_description|truncatewords:20 }}</p>
+                <a href="/blog/{{ blog.slug }}" class="text-blue-500 hover:underline mt-4 inline-block">Read More →</a>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <!-- 📄 Pagination -->
+    <div class="container mx-auto px-6 pb-12">
+        <nav class="flex justify-center">
+            <ul class="flex space-x-4">
+                {% if blogs.has_previous %}
+                    <li><a href="?page=1" class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 transition">First</a></li>
+                    <li><a href="?page={{ blogs.previous_page_number }}" class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 transition">Prev</a></li>
+                {% endif %}
+                <li class="px-4 py-2 bg-indigo-600 text-white rounded-md">Page {{ blogs.number }} of {{ blogs.paginator.num_pages }}</li>
+                {% if blogs.has_next %}
+                    <li><a href="?page={{ blogs.next_page_number }}" class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 transition">Next</a></li>
+                    <li><a href="?page={{ blogs.paginator.num_pages }}" class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 transition">Last</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+    <!-- 🌍 Footer Section -->
+    <footer class="bg-gray-900 text-white py-8 text-center">
+        <p>&copy; 2025 True Health Education Foundation. All rights reserved.</p>
+        <p class="text-gray-400 mt-2">Made with ❤️ for a better world.</p>
+    </footer>
+
+    <!-- 🌟 Scroll Animations -->
+    <script>
+        ScrollReveal().reveal('.animate-fadeIn', { delay: 200, duration: 800, distance: "30px", origin: "bottom" });
+        ScrollReveal().reveal('.animate-fadeInSlow', { delay: 400, duration: 1000, distance: "30px", origin: "bottom" });
+    </script>
+
+</body>
+</html>

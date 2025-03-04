@@ -2,7 +2,7 @@
 from datetime import datetime
 
 from django.http import HttpResponse
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.conf import settings
 import razorpay
 from .models import Donation
@@ -29,7 +29,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
 
 
-from .models import VolunteerApplication
+from .models import VolunteerApplication,BlogPost
 
 
 logo_path ="https://res.cloudinary.com/dplbdop3n/image/upload/v1737955474/logo_l00s7s.png"
@@ -226,9 +226,8 @@ razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID , settings.RAZO
 
 def index(request):
     now = datetime.now()
-
- 
-    return render(request,"index.html")
+    latest_blogs = BlogPost.objects.order_by('-created_at')[:6]
+    return render(request, 'index.html', {'blogs': latest_blogs})
 def donate(request):
     if request.method == "POST":
         donor_name = request.POST.get('name')
@@ -383,3 +382,15 @@ def dashboard_callback(request, context):
         'chart_data': chart_data
     })
     return context
+
+def robots_txt(request):
+    return HttpResponse("User-agent: *\nDisallow:\nSitemap: https://truehealtheducationfoundation.org/sitemap.xml", content_type="text/plain")
+
+
+def blog_list(request):
+    blogs = BlogPost.objects.all()
+    return render(request, 'blog_list.html', {'blogs': blogs})
+
+def blog_detail(request, slug):
+    blog = get_object_or_404(BlogPost, slug=slug)
+    return render(request, 'blog_detail.html', {'blog': blog})
